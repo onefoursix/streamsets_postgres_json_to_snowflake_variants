@@ -2,4 +2,4 @@
 
 This document describes one way to automatically write Postgres JSON Columns to Snowflake variant columns.
 
-see the docs for details
+See the [docs](docs/Using_StreamSets_to_Write_Postgres_JSON_Columns_to_Snowflake_Variants) for details
