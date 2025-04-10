@@ -57,7 +57,7 @@ In the longer term, no workaround would be needed if StreamSets adds JSON type s
 
 ### An Automated Workaround
 
-Here is an example pipeline that uses a Groovy stage to auto-detect that col4, and col6 need to be converted to map datatypes for Snowflake variants,  while leaving col3 as a String:
+Here is an example pipeline that uses a Groovy stage to auto-detect that col4 and col6 need to be converted to map datatypes for Snowflake variants,  while leaving col3 as a String:
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="images/groovy1.png" alt="groovy1.png" width="700"/>
 
