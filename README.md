@@ -61,6 +61,6 @@ Here is an example pipeline that uses a Groovy stage to auto-detect that col4 an
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="images/groovy1.png" alt="groovy1.png" width="700"/>
 
-The pipeline is located [here](/pipelines/Postgres_JSON_to_Snowflake_Variant.zip)
+The pipeline, including the Groovy stage and code, is located [here](/pipelines/Postgres_JSON_to_Snowflake_Variant.zip).  For convenience, the Groovy scripts are also posted [here](/groovy)
 
 
