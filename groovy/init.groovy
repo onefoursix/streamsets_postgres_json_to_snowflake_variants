@@ -25,7 +25,6 @@ def createSnowflakeUrl(){
     append "&schema=" + schema
     append "&role=" + role
   }
-  sdc.log.info("MARK_GROOVY URL " + snowflakeUrl.toString())
   return snowflakeUrl.toString()
 }
 
