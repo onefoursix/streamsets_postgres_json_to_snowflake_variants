@@ -61,6 +61,32 @@ Here is an example pipeline that uses a Groovy stage to auto-detect that col4 an
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="images/groovy1.png" alt="groovy1.png" width="700"/>
 
-The pipeline, including the Groovy stage and code, is located [here](/pipelines/Postgres_JSON_to_Snowflake_Variant.zip).  For convenience, the Groovy scripts are also posted [here](/groovy)
+The pipeline, including the Groovy stage and code, is located [here](/pipelines/Postgres_JSON_to_Snowflake_Variant.zip).  For convenience, the Groovy scripts are also posted separately [here](/groovy)
+
+### Groovy Implementation Details
+
+The Groovy init script runs only once, at pipeline startup. This script retrieves the Snowflake target table’s column names and data types and saves that information in the global cache.
+
+The Groovy main script pays special attention to the pipeline’s first record.  When processing the first record, the main Groovy script parses that record's JDBC metadata. Note that although col2, col3, col4 and col6 are seen as Strings, the JDBC metadata jdbcType lets us know that col3, col4 and col6 are actually JSON (the jdbcType value is “1111”) as shown here:
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="images/metadata.png" alt="metadata.png" width="700"/>
+
+While processing the first record, the main Groovy script matches the names of JSON source columns to the names of Snowflake target columns, and if the matching Snowflake column is of type variant, those JSON column names are stored in a global cache, as these are the columns that need to be converted to JSON.
+
+For all records, the main Groovy script converts the JSON columns whose names are in the global cache.
+
+*Important note:  the script performs its Postgres to Snowflake column mapping by lower-casing all column names, so if by chance you have case sensitive column names with multiple column names with the same characters in the same table with different cases  (and I sure hope you don’t!), the mapping may not be correct.*
+
+
+### Pipeline Configuration
+
+To configure the pipeline, set the Snowflake target table in the Pipeline Parameter:
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="images/param1.png" alt="param1.png" width="400"/>
+
+Set your Snowflake connection parameters in the Groovy stage’s Advanced properties.   Note that the Snowflake user, password,and URL are loaded from runtime resources:
+
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="images/param2.png" alt="param2.png" width="600"/>
+
 
 
