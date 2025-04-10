@@ -4,6 +4,7 @@ import java.sql.Statement
 import java.sql.ResultSet
 import groovy.json.JsonSlurper
 
+
 // Snowflake properties
 baseUrl = sdc.userParams['SNOWFLAKE_URL']
 warehouse = sdc.userParams['SNOWFLAKE_WH']
@@ -61,7 +62,7 @@ def getSnowflakeTableSchema() {
 
           } while (rs.next())
       }
-                                        
+                      
       return snowflakeTableColumnNamesAndTypes
 
   } finally {
@@ -81,7 +82,7 @@ sdc.state['table_schema'] = getSnowflakeTableSchema()
 // The main script will set this to false after we process the first record
 sdc.state['first_record'] = true
 
-// The main script will save the source json field names in this variable when it processes the first record
+// The main script will save the source json field names that need to be converted in this variable when it processes the first record
 sdc.state['json_fields'] = []
 
 // Create a global JsonSlurper

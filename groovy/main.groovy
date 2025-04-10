@@ -1,11 +1,11 @@
 // Get the global JsonSlurper
 jsonSlurper = sdc.state['json_slurper']
 
-// Method to get the source schema's json fields. 
+// Method to get the source schema's json fields that need to be converted. 
 // This method will only be called for the first record the pipeline sees
-def getSourceJsonFields(theFirstRecord){
+def getSourceJsonFieldsThatNeedToBeConverted(theFirstRecord){
 
-    // Will hold the list of JSON column names
+    // Will hold the list of JSON column names that need to be converted
     jsonColumns = []
 
     // Loop through the JDBC metadata attached to the record
@@ -20,8 +20,12 @@ def getSourceJsonFields(theFirstRecord){
             //    so the key is "jdbc.col3.jdbcType" and the type is "1111" (JSON)
             columnName = key.substring(5, key.length() - 9).toLowerCase()
 
-            // Add the JSON column name to the list:
-            jsonColumns.add(columnName.toLowerCase())
+            // See if the corresponding Snowflake column is a variant
+            if (snowflake_schema[columnName]  == 'variant'){
+
+                // Add the JSON column name to the list:
+               jsonColumns.add(columnName.toLowerCase())
+            }
         }
     }
     return jsonColumns
@@ -35,19 +39,17 @@ snowflake_schema = sdc.state['table_schema']
 for (record in sdc.records) {
     try {
 
-        // If this is the  first record the pipeline sees, save the JSON field names
+        // If this is the  first record the pipeline sees, save the JSON field names that need to be converted
         if (sdc.state['first_record'] == true) {
             sdc.state['first_record'] = false
-            sdc.state['json_fields'] = getSourceJsonFields(record)
+            sdc.state['json_fields'] = getSourceJsonFieldsThatNeedToBeConverted(record)
         }
         
-        // Convert JSON typed fields (which the pipeline sees as Stings) to actual JSON
-        // if the Snowflake column of the same name is a variant 
-        for (column_name in record.value.keySet()){
-            if (sdc.state['json_fields'].contains(column_name)){
-                if (snowflake_schema[column_name]  == 'variant'){
-                    record.value[column_name] = jsonSlurper.parseText(record.value[column_name])
-                }
+        // Convert JSON typed fields (which the pipeline sees as Strings) to JSON
+        for (columName in record.value.keySet()){
+            if (sdc.state['json_fields'].contains(columName)){
+                record.value[columName] = jsonSlurper.parseText(record.value[columName])
+                
             }
         }
         sdc.output.write(record)
