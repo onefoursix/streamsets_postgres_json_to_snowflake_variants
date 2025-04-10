@@ -67,7 +67,7 @@ The pipeline, including the Groovy stage and code, is located [here](/pipelines)
 
 The Groovy init script runs only once, at pipeline startup. This script retrieves the Snowflake target table’s column names and data types and saves that information in the global cache.
 
-The Groovy main script pays special attention to the pipeline’s first record.  When processing the first record, the main Groovy script parses that record's JDBC metadata. Note that although col2, col3, col4 and col6 are seen as Strings, the JDBC metadata jdbcType lets us know that col3, col4 and col6 are actually JSON (the jdbcType value is “1111”) as shown here:
+The Groovy main script pays special attention to the pipeline’s first record.  When processing the first record, the main Groovy script parses that record's JDBC metadata. Note that although col2, col3, col4 and col6 are seen as Strings, the JDBC metadata jdbcType lets us know that col3, col4, and col6 are actually JSON (the jdbcType value is “1111”) as shown here:
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<img src="images/metadata.png" alt="metadata.png" width="700"/>
 
