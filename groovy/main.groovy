@@ -49,7 +49,6 @@ for (record in sdc.records) {
         for (columName in record.value.keySet()){
             if (sdc.state['json_fields'].contains(columName)){
                 record.value[columName] = jsonSlurper.parseText(record.value[columName])
-                
             }
         }
         sdc.output.write(record)
